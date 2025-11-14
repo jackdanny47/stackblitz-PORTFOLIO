@@ -1,68 +1,50 @@
-"use client";
+'use client';
 
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-import { useEffect, useState } from "react";
+} from 'chart.js';
 
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export const LiveRwaChart = () => {
+interface LiveRwaChartProps {
+  data?: number[];
+  labels?: string[];
+}
+
+export default function LiveRwaChart({ data = [], labels = [] }: LiveRwaChartProps) {
   const [chartData, setChartData] = useState({
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    labels: labels,
     datasets: [
       {
-        label: "RWA Market Index",
-        data: [20, 25, 22, 28, 30, 35, 40],
-        borderWidth: 2,
-        fill: false,
+        label: 'RWA Live Data',
+        data: data,
+        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: 'rgba(75,192,192,0.2)',
       },
     ],
   });
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    // Simulate live data fetch
-    const timer = setTimeout(() => {
+    // Example: simulate live data update every 5s
+    const interval = setInterval(() => {
+      const newPoint = Math.floor(Math.random() * 100);
       setChartData((prev) => ({
-        ...prev,
-        datasets: [
-          {
-            ...prev.datasets[0],
-            data: prev.datasets[0].data.map((val) => val + Math.random() * 5),
-          },
-        ],
+        labels: [...prev.labels, new Date().toLocaleTimeString()],
+        datasets: [{ ...prev.datasets[0], data: [...prev.datasets[0].data, newPoint] }],
       }));
-      setLoading(false);
-    }, 1000);
+    }, 5000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(interval);
   }, []);
 
-  if (loading) return <p>Loading Chart...</p>;
-
-  return (
-    <div className="w-full max-w-2xl mx-auto py-6">
-      <Line data={chartData} />
-    </div>
-  );
-};
-
-// Default export to avoid Next.js import errors
-export default LiveRwaChart;
+  return <Line data={chartData} />;
+}
