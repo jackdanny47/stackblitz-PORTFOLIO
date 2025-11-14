@@ -1,48 +1,36 @@
-'use client';
+"use client";
 
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { useEffect, useState } from 'react';
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Tooltip,
+  Legend,
+  Title,
+} from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Tooltip,
+  Legend,
+  Title
+);
 
-const LiveRwaChart = () => {
-  const [chartData, setChartData] = useState({
-    labels: [] as string[],
-    datasets: [
-      {
-        label: 'RWA Live Data',
-        data: [] as number[],
-        borderColor: 'rgb(34,197,94)',
-        backgroundColor: 'rgba(34,197,94,0.2)',
-      },
-    ],
-  });
+export interface LiveRwaChartProps {
+  chartData: any;
+  chartOptions: any;
+}
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date().toLocaleTimeString();
-      const value = Math.floor(Math.random() * 100);
-
-      setChartData((prev) => ({
-        labels: [...prev.labels.slice(-9), now],
-        datasets: [
-          {
-            ...prev.datasets[0],
-            data: [...prev.datasets[0].data.slice(-9), value],
-          },
-        ],
-      }));
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
+export default function LiveRwaChart({ chartData, chartOptions }: LiveRwaChartProps) {
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 bg-white shadow rounded-lg">
-      <Line data={chartData} />
+    <div className="bg-black p-4 rounded-xl border border-gray-800">
+      <Line data={chartData} options={chartOptions} />
     </div>
   );
-};
-
-export default LiveRwaChart;
+}
