@@ -1,18 +1,17 @@
 import './globals.css';
-import { useThemeStore } from '@/store/themeStore';
-import type { ReactNode } from 'react';
+import Navbar from '../components/Navbar';
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  const darkMode = useThemeStore((state) => state.darkMode);
+export const metadata = {
+  title: 'RWA Portfolio',
+  description: 'Next.js + React 18 + Tailwind + Chart.js Dashboard',
+};
 
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${
-          darkMode ? 'bg-black text-white' : 'bg-white text-black'
-        } transition-colors duration-500`}
-      >
-        {children}
+      <body className="bg-gray-100 min-h-screen font-sans">
+        <Navbar />
+        <main className="p-4">{children}</main>
       </body>
     </html>
   );

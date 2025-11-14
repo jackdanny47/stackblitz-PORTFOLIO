@@ -1,50 +1,48 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { useEffect, useState } from 'react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-interface LiveRwaChartProps {
-  data?: number[];
-  labels?: string[];
-}
-
-export default function LiveRwaChart({ data = [], labels = [] }: LiveRwaChartProps) {
+const LiveRwaChart = () => {
   const [chartData, setChartData] = useState({
-    labels: labels,
+    labels: [] as string[],
     datasets: [
       {
         label: 'RWA Live Data',
-        data: data,
-        borderColor: 'rgba(75,192,192,1)',
-        backgroundColor: 'rgba(75,192,192,0.2)',
+        data: [] as number[],
+        borderColor: 'rgb(34,197,94)',
+        backgroundColor: 'rgba(34,197,94,0.2)',
       },
     ],
   });
 
   useEffect(() => {
-    // Example: simulate live data update every 5s
     const interval = setInterval(() => {
-      const newPoint = Math.floor(Math.random() * 100);
+      const now = new Date().toLocaleTimeString();
+      const value = Math.floor(Math.random() * 100);
+
       setChartData((prev) => ({
-        labels: [...prev.labels, new Date().toLocaleTimeString()],
-        datasets: [{ ...prev.datasets[0], data: [...prev.datasets[0].data, newPoint] }],
+        labels: [...prev.labels.slice(-9), now],
+        datasets: [
+          {
+            ...prev.datasets[0],
+            data: [...prev.datasets[0].data.slice(-9), value],
+          },
+        ],
       }));
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
 
-  return <Line data={chartData} />;
-}
+  return (
+    <div className="w-full max-w-3xl mx-auto p-4 bg-white shadow rounded-lg">
+      <Line data={chartData} />
+    </div>
+  );
+};
+
+export default LiveRwaChart;

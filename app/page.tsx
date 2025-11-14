@@ -1,19 +1,17 @@
-import Navbar from '../components/Navbar';
-import AnimatedHero from '../components/AnimatedHero';
-import PortfolioGrid from '../components/PortfolioGrid';
-import LiveRwaChart from '../components/LiveRwaChart';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
+import AnimatedHero from "@/components/AnimatedHero";
+import Navbar from "@/components/Navbar";
+import PortfolioGrid from "@/components/PortfolioGrid";
+import LiveRwaChart from "@/components/LiveRwaChart";
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="bg-black min-h-screen text-white">
+    <>
       <Navbar />
-      <AnimatedHero />
-      <PortfolioGrid />
-      <LiveRwaChart />
-      <Contact />
-      <Footer />
-    </main>
+      <main className="container mx-auto px-4">
+        <AnimatedHero />
+        <LiveRwaChart />
+        <PortfolioGrid />
+      </main>
+    </>
   );
 }
