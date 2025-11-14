@@ -1,10 +1,13 @@
+// next.config.js
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverActions: true,
+    serverActions: {
+      allowedOrigins: ["*"],
+    },
   },
-  future: {
-    webpack5: true, // forces webpack instead of Turbopack
-  },
+
+  turbopack: {}, // enables Turbopack with default settings
 };
 
-module.exports = nextConfig;
+export default nextConfig;
